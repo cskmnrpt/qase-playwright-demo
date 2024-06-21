@@ -74,6 +74,7 @@ web_modules/
 
 # dotenv environment variable files
 .env
+.env.qase
 .env.development.local
 .env.test.local
 .env.production.local
@@ -128,3 +129,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+#Ignore test-results
+test-results/
+
+#MacOS files
+.DS_Store
