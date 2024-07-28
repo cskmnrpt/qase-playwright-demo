@@ -1,25 +1,10 @@
-name: Playwright Tests
+stages:
+  - test
 
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    services:
-      playwright:
-        image: mcr.microsoft.com/playwright:v1.45.1-jammy
-        options: --ipc=host
-        ports:
-          - 3000:3000
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run Playwright tests
-      env:
-        API_KEY: ${{ secrets.QASE_TOKEN }}
-      run: |
-        npx playwright install-deps
-        QASE_MODE=testops npx playwright test
+test:
+  stage: test
+  image: mcr.microsoft.com/playwright:v1.42.1-jammy
+  script:
+    - npm ci
+    - npx playwright install
+    - QASE_MODE=testops npx playwright test tests/example.spec.ts
