@@ -19,7 +19,7 @@ jobs:
 
     - name: Run Playwright tests
       env:
-        API_KEY: ${{ QASE_TOKEN }}
+        API_KEY: ${{ secrets.QASE_TOKEN }}
       run: |
         npx playwright install-deps
-        npx playwright test
+        QASE_MODE=testops npx playwright test
