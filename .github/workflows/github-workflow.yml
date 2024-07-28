@@ -3,7 +3,7 @@ stages:
 
 test:
   stage: test
-  image: mcr.microsoft.com/playwright:v1.42.1-jammy
+  image: mcr.microsoft.com/playwright:v1.45.1-jammy
   script:
     - npm ci
     - npx playwright install
