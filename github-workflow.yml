@@ -1,0 +1,25 @@
+name: Playwright Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      playwright:
+        image: mcr.microsoft.com/playwright:v1.45.1-jammy
+        options: --ipc=host
+        ports:
+          - 3000:3000
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run Playwright tests
+      env:
+        API_KEY: ${{ QASE_TOKEN }}
+      run: |
+        npx playwright install-deps
+        npx playwright test
