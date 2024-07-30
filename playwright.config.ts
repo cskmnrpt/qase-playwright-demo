@@ -28,7 +28,7 @@ export default defineConfig({
       {
         testops: {
           api: {
-            token: "7cc69b3cf9ad96aafc32d70ead3b3986a8b371dabbd48715cbf4c9df99946c25",
+            token: process.env.QASE_TOKEN,
           },
           run: {
             id: process.env.QASE_RUN_ID,
