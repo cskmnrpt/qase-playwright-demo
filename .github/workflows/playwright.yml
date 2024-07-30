@@ -21,7 +21,7 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests with Qase integration
       env:
-        QASE_TOKEN: ${{ secrets.QASE_TOKEN }}
+        QASE_TOKEN: 7cc69b3cf9ad96aafc32d70ead3b3986a8b371dabbd48715cbf4c9df99946c25
       run: QASE_MODE=testops npx playwright test
     - uses: actions/upload-artifact@v4
       if: always()
