@@ -13,12 +13,12 @@ const config = {
         debug: process.env.QASE_DEBUG,
         testops: {
           api: {
-            token: process.env.QASE_TESTOPS_API_TOKEN,
+            token: process.env.QASE_API_TOKEN,
           },
-          project: process.env.QASE_TESTOPS_PROJECT,
+          project: 'QD',
           uploadAttachments: true,
           run: {
-            complete: process.env.QASE_TESTOPS_RUN_COMPLETE,
+            complete: false,
           },
         },
       },
