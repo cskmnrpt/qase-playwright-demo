@@ -15,9 +15,6 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-
     - name: Create a Qase Test Run
       uses: qase-tms/gh-actions/run-create
       id: qase-run-create
