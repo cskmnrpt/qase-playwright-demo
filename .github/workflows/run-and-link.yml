@@ -20,7 +20,7 @@ jobs:
 
     - name: Create a Qase Test Run
       id: qase-run-create
-      uses: qase-tms/gh-actions@v1  # Ensure this is the correct repository and version
+      uses:  qase-tms/gh-actions/run-create # Ensure this is the correct repository and version
       with:
         token: ${{ secrets.QASE_API_TOKEN }}
         project: ${{ env.QASE_TESTOPS_PROJECT }}
