@@ -18,9 +18,9 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Create a Qase Test Run
+    - name: Create a Qase test run
+      uses: qase-tms/gh-actions/run-create
       id: qase-run-create
-      uses:  qase-tms/gh-actions/run-create # Ensure this is the correct repository and version
       with:
         token: ${{ secrets.QASE_API_TOKEN }}
         project: ${{ env.QASE_TESTOPS_PROJECT }}
