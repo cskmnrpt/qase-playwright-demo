@@ -18,17 +18,23 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Create Qase Test Run
-      id: create_qase_test_run
-      run: |
-        response=$(curl -X POST "${{ env.QASE_API_BASE_URL }}/runs" \
-          -H "Content-Type: application/json" \
-          -H "Authorization: Token ${QASE_TESTOPS_API_TOKEN}" \
-          -d '{
-                "title": "GitHub Actions Test Run",
-                "project_code": "${{ env.QASE_TESTOPS_PROJECT }}"
-              }')
-        echo "QASE_TESTOPS_RUN_ID=$(echo $response | jq -r .id)" >> $GITHUB_ENV
-
+  id: create_qase_test_run
+  run: |
+    response=$(curl -X POST "${{ env.QASE_API_BASE_URL }}/runs" \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Token ${QASE_TESTOPS_API_TOKEN}" \
+      -d '{
+            "title": "GitHub Actions Test Run",
+            "project_code": "${{ env.QASE_TESTOPS_PROJECT }}"
+          }')
+    echo "Response: $response"
+    run_id=$(echo $response | jq -r '.id')
+    if [[ "$run_id" == "null" ]]; then
+      echo "Failed to create Qase Test Run. Response: $response"
+      exit 1
+    fi
+    echo "QASE_TESTOPS_RUN_ID=$run_id" >> $GITHUB_ENV
+    
     - uses: cskmnrpt/qase-link-run@v2
       env:
         QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
