@@ -15,11 +15,12 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
 
-    - name: Create a Qase test run
-      uses: qase-tms/gh-actions/run-create
+    - name: Create a Qase Test Run
       id: qase-run-create
+      uses: qase-tms/gh-actions@v1  # Ensure this is the correct repository and version
       with:
         token: ${{ secrets.QASE_API_TOKEN }}
         project: ${{ env.QASE_TESTOPS_PROJECT }}
@@ -30,11 +31,12 @@ jobs:
 
     - name: Link Qase Run
       uses: cskmnrpt/qase-link-run@v2
-      env:
-        QASE_TESTOPS_API_TOKEN: ${{ env.QASE_TESTOPS_API_TOKEN }}  
+      with:
+        QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_API_TOKEN }}
         QASE_TESTOPS_RUN_ID: ${{ steps.qase-run-create.outputs.id }}
 
-    - uses: actions/setup-node@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
         node-version: '18'  # specify your Node.js version here
 
