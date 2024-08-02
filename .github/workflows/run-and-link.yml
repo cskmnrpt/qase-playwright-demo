@@ -1,4 +1,5 @@
 name: Qase Tests
+
 on:
   push:
     branches:
@@ -11,9 +12,15 @@ env:
   QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_API_TOKEN }}
 
 jobs:
-  steps:
+  qase-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Create a Qase test run
-      uses: qase-tms/gh-actions/run-create
+      uses: qase-tms/gh-actions/run-create@v1
       id: qase-run-create
       with:
         token: ${{ secrets.QASE_API_TOKEN }}
@@ -22,22 +29,20 @@ jobs:
         description: |
           Test Run Description
           Use multiline text and [markdown formatting](https://example.com)
-  
+
+    - name: Install dependencies
+      run: npm install
+
     - name: Run tests
       env:
-        QASE_TESTOPS_PROJECT: CODE
-        QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
+        QASE_TESTOPS_PROJECT: ${{ env.QASE_TESTOPS_PROJECT }}
+        QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_API_TOKEN }}
         QASE_TESTOPS_RUN_ID: ${{ steps.qase-run-create.outputs.id }}
-      run: |
-        npm install
-        npm playwright test test/*
-  
-      
+      run: npm playwright test test/*
+
     - name: Complete a Qase test run
-      uses: qase-tms/gh-actions/run-complete
+      uses: qase-tms/gh-actions/run-complete@v1
       id: complete
-      # use always() to run even if test step failed or job was canceled
-      # but don't run if creating a test run failed before this step
       if: always() && steps.qase-run-create.result == 'success'
       with:
         token: ${{ secrets.QASE_API_TOKEN }}
