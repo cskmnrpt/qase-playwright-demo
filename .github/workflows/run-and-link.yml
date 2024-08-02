@@ -18,7 +18,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Create a Qase test run
+    - name: Create a Qase Test Run
       uses: qase-tms/gh-actions/run-create
       id: qase-run-create
       with:
@@ -28,7 +28,7 @@ jobs:
         description: |
           Test Run Description
           Use multiline text and [markdown formatting](https://example.com)
-
+    
     - name: Link Qase Run
       uses: cskmnrpt/qase-link-run@v2
       with:
@@ -38,7 +38,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'  # specify your Node.js version here
+        node-version: '18'  # Specify your Node.js version here
 
     - name: Install Dependencies
       run: npm install
