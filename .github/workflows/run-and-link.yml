@@ -1,0 +1,41 @@
+name: Qase Tests
+on:
+  workflow_dispatch:
+
+env:
+  QASE_API_BASE_URL: "https://api.qase.io/v1/"
+  QASE_TESTOPS_PROJECT: 'QD'
+  QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_API_TOKEN }}
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Create Qase Test Run
+      id: create_qase_test_run
+      run: |
+        response=$(curl -X POST "${{ env.QASE_API_BASE_URL }}/runs" \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Token ${QASE_TESTOPS_API_TOKEN}" \
+          -d '{
+                "title": "GitHub Actions Test Run",
+                "project_code": "${{ env.QASE_TESTOPS_PROJECT }}"
+              }')
+        echo "QASE_TESTOPS_RUN_ID=$(echo $response | jq -r .id)" >> $GITHUB_ENV
+
+    - uses: cskmnrpt/qase-link-run@v2
+      env:
+        QASE_API_TOKEN: ${{ env.QASE_API_TOKEN }}
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '18'  # specify your Node.js version here
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Playwright Tests
+      run: npx playwright test tests/*
