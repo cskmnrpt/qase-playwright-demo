@@ -11,34 +11,35 @@ env:
   QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_API_TOKEN }}
 
 jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-    - name: Create a Qase Test Run
+  steps:
+    - name: Create a Qase test run
       uses: qase-tms/gh-actions/run-create
       id: qase-run-create
       with:
         token: ${{ secrets.QASE_API_TOKEN }}
         project: ${{ env.QASE_TESTOPS_PROJECT }}
-        title: Automated run - Playwright demo
+        title: Test Run Title
         description: |
           Test Run Description
           Use multiline text and [markdown formatting](https://example.com)
-    
-    - name: Link Qase Run
-      uses: cskmnrpt/qase-link-run@v2
-      with:
-        QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_API_TOKEN }}
+  
+    - name: Run tests
+      env:
+        QASE_TESTOPS_PROJECT: CODE
+        QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
         QASE_TESTOPS_RUN_ID: ${{ steps.qase-run-create.outputs.id }}
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+      run: |
+        npm install
+        npm playwright test test/*
+  
+      
+    - name: Complete a Qase test run
+      uses: qase-tms/gh-actions/run-complete
+      id: complete
+      # use always() to run even if test step failed or job was canceled
+      # but don't run if creating a test run failed before this step
+      if: always() && steps.qase-run-create.result == 'success'
       with:
-        node-version: '18'  # Specify your Node.js version here
-
-    - name: Install Dependencies
-      run: npm install
-
-    - name: Run Playwright Tests
-      run: npx playwright test tests/*
+        token: ${{ secrets.QASE_API_TOKEN }}
+        project: ${{ env.QASE_TESTOPS_PROJECT }}
+        id: ${{ steps.qase-run-create.outputs.id }}
