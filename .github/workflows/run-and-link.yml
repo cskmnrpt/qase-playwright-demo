@@ -1,5 +1,8 @@
 name: Qase Tests
 on:
+  push:
+    branches:
+      - takuya-105789300606328  # Replace with the name of your non-default branch
   workflow_dispatch:
 
 env:
