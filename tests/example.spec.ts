@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import {qase} from "playwright-qase-reporter";
 
 test('has title', async ({ page }) => {
-  qase.id(1);
+//  qase.id(1);  #[QASE] please note, that you will need to have a test case with id: 2 in your project repository
   qase.title("has title")
 
   await page.goto('https://playwright.dev/');
@@ -12,8 +12,9 @@ test('has title', async ({ page }) => {
 });
 
 test('get started link', async ({ page }) => {
-  qase.id(2);
-  qase.title("get started link");
+//  qase.id(2);
+  qase.title("get started link"); 
+  //[QASE] qase.title() will work only when qase.id() is not used. This will create a new test case with the specified title.
 
   await page.goto('https://playwright.dev/');
 

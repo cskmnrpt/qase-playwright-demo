@@ -26,15 +26,16 @@ export default defineConfig({
     [
       'playwright-qase-reporter',
       {
+        debug: true,
         testops: {
           api: {
-            token: process.env.QASE_TOKEN,
+            token: process.env.QASE_TESTOPS_API_TOKEN,
           },
           run: {
-            id: process.env.QASE_RUN_ID,
+ //           id: process.env.QASE_RUN_ID,  #[QASE] - Please ensure this run id exists in Qase. You can find the run id in the URL of the run. If this is not specified the reporter will create a new run.
             complete: true,
           },
-          project: 'TEST',
+          project: process.env.QASE_TESTOPS_PROJECT,
           uploadAttachments: true
         },
       },
