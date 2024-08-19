@@ -8,7 +8,7 @@ const values = ['Chrome', 'Safari', 'Firefox'];
 
 for (const value of values) {
   test(`Test with parameters: ${value}`, async ({ page }) => {
-//    qase.id(4752);
+    qase.id(170);
     qase.parameters({ 'parameter': value });
     await page.goto('https://example.com');
   });
