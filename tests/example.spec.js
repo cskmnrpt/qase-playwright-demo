@@ -26,7 +26,7 @@ test.describe('Test suite', () => {
       expect(true).toBe(true);
     });
     await test.step('Step 2', async () => {
-      expect(true).toBe(true);
+      expect(true).toBe(false);
     });
     expect(true).toBe(true);
   });
