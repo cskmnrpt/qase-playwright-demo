@@ -4,7 +4,7 @@
   "description": "Demo",
   "main": "index.js",
   "scripts": {
-    "test": "export QASE_MODE=testops; npx playwright test"
+    "test": "export QASE_MODE=off; npx playwright test tests/tree.spec.js"
   },
   "repository": {
     "type": "git",
