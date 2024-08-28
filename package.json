@@ -28,7 +28,7 @@
     "dotenv": "^16.4.5",
     "playwright": "^1.44.1",
     "playwright-chromium": "^1.44.1",
-    "playwright-qase-reporter": "^2.0.3",
+    "playwright-qase-reporter": "^2.0.11",
     "typescript": "^5.4.5"
   }
 }
