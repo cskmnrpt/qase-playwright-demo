@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npx playwright test --reporter=junit
         continue-on-error: true
 
       - name: Pull Qase CLI Docker image
@@ -57,14 +57,14 @@ jobs:
         run: |
           docker run --rm \
             -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
-            -v ${{ github.workspace }}:/build/workflows/results.json \
+            -v ${{ github.workspace }}:/results \
             ghcr.io/qase-tms/qase-cli:latest \
             testops result upload \
               --project ${{ secrets.QASE_PROJECT_CODE }} \
               --token ${{ secrets.QASE_API_TOKEN }} \
               --id ${{ env.QASE_TESTOPS_RUN_ID }} \
-              --format 'qase' \
-              --path /results/qase-playwright-demo/test-results.xml \
+              --format 'junit' \
+              --path /results/qase-playwright-demo/build/qase-report/report.xml \
               --verbose
 
       - name: Complete Qase Test Run
