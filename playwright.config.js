@@ -10,7 +10,7 @@ const config = {
     [
       'playwright-qase-reporter',
       {
-        mode: 'testops',
+        mode: 'report',
         debug: process.env.QASE_DEBUG,
         testops: {
           api: {
@@ -24,14 +24,6 @@ const config = {
         },
       },
     ],
-    // Add JUnit reporter
-    [
-      'junit',
-      {
-        outputFile: 'results/test-results.xml', // Customize the output file location
-      },
-    ],
   ],
 };
-
 module.exports = config;

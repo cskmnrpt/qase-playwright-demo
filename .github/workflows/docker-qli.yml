@@ -57,13 +57,13 @@ jobs:
         run: |
           docker run --rm \
             -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
-            -v ${{ github.workspace }}:/results \
+            -v ${{ github.workspace }}:/build/workflows/results.json \
             ghcr.io/qase-tms/qase-cli:latest \
             testops result upload \
               --project ${{ secrets.QASE_PROJECT_CODE }} \
               --token ${{ secrets.QASE_API_TOKEN }} \
               --id ${{ env.QASE_TESTOPS_RUN_ID }} \
-              --format 'junit' \
+              --format 'qase' \
               --path /results/qase-playwright-demo/test-results.xml \
               --verbose
 
