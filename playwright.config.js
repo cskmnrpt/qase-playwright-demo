@@ -10,6 +10,7 @@ const config = {
     [
       'playwright-qase-reporter',
       {
+        mode: 'testops',
         debug: process.env.QASE_DEBUG,
         testops: {
           api: {

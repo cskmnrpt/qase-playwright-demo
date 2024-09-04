@@ -33,10 +33,10 @@ jobs:
           docker run --rm \
             -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
             ghcr.io/qase-tms/qase-cli:latest \
-            qli testops run create \
+            testops run create \
               --project ${{ secrets.QASE_PROJECT_CODE }} \
               --token ${{ secrets.QASE_API_TOKEN }} \
-              --title "Playwright Test Run Docker $(date +'%Y-%m-%d %H:%M:%S')" \
+              --title "Playwright Test Run $(date +'%Y-%m-%d %H:%M:%S')" \
               --description "Automated Playwright test run" \
               --environment "dev-web-app" \
               --verbose \
@@ -54,7 +54,7 @@ jobs:
             -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
             -v ${{ github.workspace }}:/results \
             ghcr.io/qase-tms/qase-cli:latest \
-            qli testops result upload \
+            testops result upload \
               --project ${{ secrets.QASE_PROJECT_CODE }} \
               --token ${{ secrets.QASE_API_TOKEN }} \
               --id ${{ env.QASE_TESTOPS_RUN_ID }} \
@@ -67,7 +67,7 @@ jobs:
           docker run --rm \
             -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
             ghcr.io/qase-tms/qase-cli:latest \
-            qli testops run complete \
+            testops run complete \
               --project ${{ secrets.QASE_PROJECT_CODE }} \
               --token ${{ secrets.QASE_API_TOKEN }} \
               --run ${{ env.QASE_TESTOPS_RUN_ID }} \
