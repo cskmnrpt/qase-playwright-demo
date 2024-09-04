@@ -23,6 +23,7 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test --reporter=junit
+        continue-on-error: true
 
       - name: Pull Qase CLI Docker image
         run: docker pull ghcr.io/qase-tms/qase-cli:latest
