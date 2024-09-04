@@ -35,7 +35,6 @@ jobs:
             ghcr.io/qase-tms/qase-cli:latest \
             testops run create \
               --project ${{ secrets.QASE_PROJECT_CODE }} \
-              --token ${{ secrets.QASE_API_TOKEN }} \
               --title "Playwright Test Run $(date +'%Y-%m-%d %H:%M:%S')" \
               --description "Automated Playwright test run" \
               --environment "dev-web-app" \
@@ -45,8 +44,13 @@ jobs:
       - name: Extract Test Run ID
         id: extract_run_id
         run: |
-          cat qase.env | grep QASE_TESTOPS_RUN_ID | cut -d'=' -f2 > run_id.txt
-          echo "QASE_TESTOPS_RUN_ID=$(cat run_id.txt)" >> $GITHUB_ENV
+          if [ -f qase.env ]; then
+            cat qase.env | grep QASE_TESTOPS_RUN_ID | cut -d'=' -f2 > run_id.txt
+            echo "QASE_TESTOPS_RUN_ID=$(cat run_id.txt)" >> $GITHUB_ENV
+          else
+            echo "QASE_TESTOPS_RUN_ID not found"
+            exit 1
+          fi
 
       - name: Upload Test Results to Qase
         run: |
