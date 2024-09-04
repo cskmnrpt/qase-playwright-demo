@@ -64,7 +64,7 @@ jobs:
               --token ${{ secrets.QASE_API_TOKEN }} \
               --id ${{ env.QASE_TESTOPS_RUN_ID }} \
               --format 'junit' \
-              --path /results/qase-playwright-demo/build/qase-report/report.xml \
+              --path /results/build/qase-report/report.xml \
               --verbose
 
       - name: Complete Qase Test Run
