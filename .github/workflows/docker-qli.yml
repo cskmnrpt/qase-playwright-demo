@@ -35,6 +35,7 @@ jobs:
             ghcr.io/qase-tms/qase-cli:latest \
             testops run create \
               --project ${{ secrets.QASE_PROJECT_CODE }} \
+              --token ${{ secrets.QASE_API_TOKEN }} \
               --title "Playwright Test Run $(date +'%Y-%m-%d %H:%M:%S')" \
               --description "Automated Playwright test run" \
               --environment "dev-web-app" \
