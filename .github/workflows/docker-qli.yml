@@ -1,0 +1,74 @@
+name: Run Playwright Tests and Report to Qase
+
+on:
+  push:
+    branches:
+      - docker-qli
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Playwright tests
+        run: npx playwright test --reporter=junit
+
+      - name: Pull Qase CLI Docker image
+        run: docker pull ghcr.io/qase-tms/qase-cli:latest
+
+      - name: Create Qase Test Run
+        id: create_test_run
+        run: |
+          docker run --rm \
+            -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
+            ghcr.io/qase-tms/qase-cli:latest \
+            qli testops run create \
+              --project ${{ secrets.QASE_PROJECT_CODE }} \
+              --token ${{ secrets.QASE_API_TOKEN }} \
+              --title "Playwright Test Run Docker $(date +'%Y-%m-%d %H:%M:%S')" \
+              --description "Automated Playwright test run" \
+              --environment "dev-web-app" \
+              --verbose \
+              --output qase.env
+
+      - name: Extract Test Run ID
+        id: extract_run_id
+        run: |
+          cat qase.env | grep QASE_TESTOPS_RUN_ID | cut -d'=' -f2 > run_id.txt
+          echo "QASE_TESTOPS_RUN_ID=$(cat run_id.txt)" >> $GITHUB_ENV
+
+      - name: Upload Test Results to Qase
+        run: |
+          docker run --rm \
+            -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
+            -v ${{ github.workspace }}:/results \
+            ghcr.io/qase-tms/qase-cli:latest \
+            qli testops result upload \
+              --project ${{ secrets.QASE_PROJECT_CODE }} \
+              --token ${{ secrets.QASE_API_TOKEN }} \
+              --id ${{ env.QASE_TESTOPS_RUN_ID }} \
+              --format junit \
+              --path /results/test-results.xml \
+              --verbose
+
+      - name: Complete Qase Test Run
+        run: |
+          docker run --rm \
+            -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
+            ghcr.io/qase-tms/qase-cli:latest \
+            qli testops run complete \
+              --project ${{ secrets.QASE_PROJECT_CODE }} \
+              --token ${{ secrets.QASE_API_TOKEN }} \
+              --run ${{ env.QASE_TESTOPS_RUN_ID }} \
+              --verbose
