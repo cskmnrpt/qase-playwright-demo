@@ -24,6 +24,14 @@ const config = {
         },
       },
     ],
+    // Add JUnit reporter
+    [
+      'junit',
+      {
+        outputFile: 'results/test-results.xml', // Customize the output file location
+      },
+    ],
   ],
 };
+
 module.exports = config;
