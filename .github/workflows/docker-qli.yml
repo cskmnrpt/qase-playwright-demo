@@ -74,5 +74,5 @@ jobs:
             testops run complete \
               --project ${{ secrets.QASE_PROJECT_CODE }} \
               --token ${{ secrets.QASE_API_TOKEN }} \
-              --run ${{ env.QASE_TESTOPS_RUN_ID }} \
+              --id ${{ env.QASE_TESTOPS_RUN_ID }} \
               --verbose
