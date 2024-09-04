@@ -58,7 +58,7 @@ jobs:
               --project ${{ secrets.QASE_PROJECT_CODE }} \
               --token ${{ secrets.QASE_API_TOKEN }} \
               --id ${{ env.QASE_TESTOPS_RUN_ID }} \
-              --format junit \
+              --format 'junit' \
               --path /results/test-results.xml \
               --verbose
 
