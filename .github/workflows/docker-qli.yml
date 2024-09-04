@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run Playwright tests
-        run: npx playwright test --reporter=junit
+        run: npx playwright test
         continue-on-error: true
 
       - name: Pull Qase CLI Docker image
