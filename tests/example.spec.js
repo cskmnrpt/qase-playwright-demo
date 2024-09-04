@@ -4,11 +4,11 @@ const { test, expect } = require('@playwright/test');
 test.describe('Test suite', () => {
   test('Simple test', () => {
     qase.title('Example of simple test');
-    expect(true).toBe(true);
+    expect(true).toBe(false);
   });
 
   test('Test with annotated fields', () => {
-    qase.fields({ 'severity': 'high', 'priority': 'medium' });
+    qase.fields({ 'severity': 'critical', 'priority': 'medium' });
     expect(true).toBe(true);
   });
 
