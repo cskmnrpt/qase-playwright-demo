@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run Playwright tests
-        run: npx playwright test --reporter=junit --output=/results/test-results.xml
+        run: npx playwright test --reporter=junit --output=/test-results.xml
         continue-on-error: true
 
       - name: Create a Qase test run
@@ -67,13 +67,14 @@ jobs:
       - name: Upload test results to Qase
         uses: qase-tms/gh-actions/report@v1
         id: report
+        continue-on-error: true
         with:
           token: ${{ secrets.QASE_API_TOKEN }}
           project: ${{ secrets.QASE_PROJECT_CODE }}
           # create a test run using qase-tms/gh-actions/run-create
           id: ${{ steps.qase-run-create.outputs.id }}
           format: junit
-          path: /results/test-results.xml
+          path: /test-results.xml
           batch: 100
           verbose: true
 
