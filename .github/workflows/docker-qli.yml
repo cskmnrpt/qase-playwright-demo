@@ -24,7 +24,7 @@ jobs:
       - name: Run Playwright tests
         run: |
           mkdir results
-          npx playwright test --reporter=junit --output=results
+          npx playwright test --reporter=junit
         continue-on-error: true
 
       - name: ls
