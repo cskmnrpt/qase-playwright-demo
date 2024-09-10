@@ -28,7 +28,7 @@ jobs:
         continue-on-error: true
 
       - name: ls
-        run: ls -la
+        run: ls -la results
 
       - name: Create a Qase test run
         uses: qase-tms/gh-actions/run-create@v1
@@ -69,7 +69,7 @@ jobs:
       #       exit 1
       #     fi
       - name: echo file
-        run: cat /results/test-results.xml
+        run: cat results/test-results.xml
 
         
       - name: Upload test results to Qase
@@ -81,7 +81,7 @@ jobs:
           # create a test run using qase-tms/gh-actions/run-create
           id: ${{ steps.qase-run-create.outputs.id }}
           format: junit
-          path: /results/test-results.xml
+          path: results/test-results.xml
           batch: 100
           verbose: true
 
