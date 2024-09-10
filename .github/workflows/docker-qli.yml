@@ -26,7 +26,7 @@ jobs:
         continue-on-error: true
 
       - name: Create a Qase test run
-        uses: qase-tms/gh-actions/run-create
+        uses: qase-tms/gh-actions/run-create@v1
         id: qase-run-create
         with:
           token: ${{ secrets.QASE_API_TOKEN }}
@@ -65,7 +65,7 @@ jobs:
       #     fi
 
       - name: Upload test results to Qase
-        uses: qase-tms/gh-actions/report
+        uses: qase-tms/gh-actions/report@v1
         id: report
         with:
           token: ${{ secrets.QASE_API_TOKEN }}
@@ -103,7 +103,7 @@ jobs:
       #         --verbose
 
       - name: Complete a Qase test run
-        uses: qase-tms/gh-actions/run-complete
+        uses: qase-tms/gh-actions/run-complete@v1
         id: complete
         # use always() to run even if test step failed or job was canceled
         # but don't run if creating a test run failed before this step
