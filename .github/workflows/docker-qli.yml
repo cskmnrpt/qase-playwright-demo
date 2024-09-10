@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run Playwright tests
-        run: npx playwright test --reporter=junit
+        run: npx playwright test
         continue-on-error: true
 
       - name: ls
@@ -108,7 +108,7 @@ jobs:
       #         --verbose
 
       - name: Debug Step Result
-        run: echo ${{ steps.qase-run-create.result }}
+        run: echo "${{ steps.qase-run-create.result }}"
 
       - name: Complete a Qase test run
         uses: qase-tms/gh-actions/run-complete@v1
