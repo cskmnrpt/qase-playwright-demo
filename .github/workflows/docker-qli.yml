@@ -28,7 +28,7 @@ jobs:
         continue-on-error: true
 
       - name: ls
-        run: ls -la results
+        run: ls -la
 
       - name: Create a Qase test run
         uses: qase-tms/gh-actions/run-create@v1
@@ -68,8 +68,8 @@ jobs:
       #       echo "QASE_TESTOPS_RUN_ID not found"
       #       exit 1
       #     fi
-      - name: echo file
-        run: cat results/test-results.xml
+      # - name: echo file
+      #   run: cat results/test-results.xml
 
         
       - name: Upload test results to Qase
