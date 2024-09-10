@@ -22,9 +22,7 @@ jobs:
         run: npm install
 
       - name: Run Playwright tests
-        run: |
-          mkdir results
-          npx playwright test --reporter=junit
+        run: npx playwright test --reporter=junit
         continue-on-error: true
 
       - name: ls
@@ -71,7 +69,6 @@ jobs:
       # - name: echo file
       #   run: cat results/test-results.xml
 
-        
       - name: Upload test results to Qase
         uses: qase-tms/gh-actions/report@v1
         continue-on-error: true

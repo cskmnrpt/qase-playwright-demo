@@ -6,7 +6,6 @@ const config = {
     video: 'retain-on-failure',
   },
   reporter: [
-    ['list'],
     ['junit', { outputFile: 'results/test-results.xml' }],
     [
       'playwright-qase-reporter',
