@@ -76,7 +76,7 @@ jobs:
           # create a test run using qase-tms/gh-actions/run-create
           id: ${{ steps.qase-run-create.outputs.id }}
           format: junit
-          path: test-results.xml
+          path: ./test-results.xml
           batch: 100
           verbose: true
 
