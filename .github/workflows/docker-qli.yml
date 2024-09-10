@@ -28,13 +28,17 @@ jobs:
       - name: ls
         run: ls -la
 
+      - name: Get current date
+        id: get-date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S')"
+
       - name: Create a Qase test run
         uses: qase-tms/gh-actions/run-create@v1
         id: qase-run-create
         with:
           token: ${{ secrets.QASE_API_TOKEN }}
           project: ${{ secrets.QASE_PROJECT_CODE }}
-          title: "Playwright Test Run $(date +'%Y-%m-%d %H:%M:%S')"
+          title: "Playwright Test Run ${{ steps.get-date.outputs.date }}"
           description: "Automated Playwright test run"
           environment: "dev-web-app"
           verbose: true
@@ -115,7 +119,7 @@ jobs:
         id: complete
         # use always() to run even if test step failed or job was canceled
         # but don't run if creating a test run failed before this step
-        if: ${{ always() && steps.qase-run-create.result == 'success' }}
+        if: always() && steps.qase-run-create.outcome == 'success'
         with:
           token: ${{ secrets.QASE_API_TOKEN }}
           project: ${{ secrets.QASE_PROJECT_CODE }}
