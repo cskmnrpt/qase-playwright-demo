@@ -115,7 +115,7 @@ jobs:
         id: complete
         # use always() to run even if test step failed or job was canceled
         # but don't run if creating a test run failed before this step
-        if: always() && steps.qase-run-create.result == 'success'
+        if: ${{ always() && steps.qase-run-create.result == 'success' }}
         with:
           token: ${{ secrets.QASE_API_TOKEN }}
           project: ${{ secrets.QASE_PROJECT_CODE }}
