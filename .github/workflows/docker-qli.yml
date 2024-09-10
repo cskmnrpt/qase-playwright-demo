@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "18"
 
@@ -25,12 +25,9 @@ jobs:
         run: npx playwright test
         continue-on-error: true
 
-      - name: ls
-        run: ls -la
-
       - name: Get current date
         id: get-date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S')"
+        run: echo "{date}={$(date +'%Y-%m-%d %H:%M:%S')}" >> $GITHUB_OUTPUT
 
       - name: Create a Qase test run
         uses: qase-tms/gh-actions/run-create@v1
@@ -43,76 +40,17 @@ jobs:
           environment: "dev-web-app"
           verbose: true
 
-      # - name: Pull Qase CLI Docker image
-      #   run: docker pull ghcr.io/qase-tms/qase-cli:latest
-
-      # - name: Create Qase Test Run
-      #   id: create_test_run
-      #   run: |
-      #     run_output=$(docker run --rm \
-      #       -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
-      #       ghcr.io/qase-tms/qase-cli:latest \
-      #       testops run create \
-      #         --project ${{ secrets.QASE_PROJECT_CODE }} \
-      #         --token ${{ secrets.QASE_API_TOKEN }} \
-      #         --title "Playwright Test Run $(date +'%Y-%m-%d %H:%M:%S')" \
-      #         --description "Automated Playwright test run" \
-      #         --environment "dev-web-app" \
-      #         --verbose)
-
-      #     echo "$run_output"
-      #     run_id=$(echo "$run_output" | grep -oP '(?<=runID=)\d+')
-      #     echo "QASE_TESTOPS_RUN_ID=$run_id" >> $GITHUB_ENV
-
-      # - name: Verify Run ID
-      #   run: |
-      #     if [ -z "$QASE_TESTOPS_RUN_ID" ]; then
-      #       echo "QASE_TESTOPS_RUN_ID not found"
-      #       exit 1
-      #     fi
-      # - name: echo file
-      #   run: cat results/test-results.xml
-
       - name: Upload test results to Qase
         uses: qase-tms/gh-actions/report@v1
         continue-on-error: true
         with:
           token: ${{ secrets.QASE_API_TOKEN }}
           project: ${{ secrets.QASE_PROJECT_CODE }}
-          # create a test run using qase-tms/gh-actions/run-create
           id: ${{ steps.qase-run-create.outputs.id }}
           format: junit
           path: results/test-results.xml
           batch: 100
           verbose: true
-
-      # - name: Upload Test Results to Qase
-      #   run: |
-      #     docker run --rm \
-      #       -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
-      #       -v ${{ github.workspace }}:/results \
-      #       ghcr.io/qase-tms/qase-cli:latest \
-      #       testops result upload \
-      #         --project ${{ secrets.QASE_PROJECT_CODE }} \
-      #         --token ${{ secrets.QASE_API_TOKEN }} \
-      #         --id ${{ env.QASE_TESTOPS_RUN_ID }} \
-      #         --format 'junit' \
-      #         --path /results/build/qase-report/report.json \
-      #         --verbose
-
-      # - name: Complete Qase Test Run
-      #   run: |
-      #     docker run --rm \
-      #       -e QASE_API_TOKEN=${{ secrets.QASE_API_TOKEN }} \
-      #       ghcr.io/qase-tms/qase-cli:latest \
-      #       testops run complete \
-      #         --project ${{ secrets.QASE_PROJECT_CODE }} \
-      #         --token ${{ secrets.QASE_API_TOKEN }} \
-      #         --id ${{ env.QASE_TESTOPS_RUN_ID }} \
-      #         --verbose
-
-      - name: Debug Step Result
-        run: echo "${{ steps.qase-run-create.result }}"
 
       - name: Complete a Qase test run
         uses: qase-tms/gh-actions/run-complete@v1
