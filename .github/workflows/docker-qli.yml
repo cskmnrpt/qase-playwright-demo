@@ -64,7 +64,8 @@ jobs:
       #       exit 1
       #     fi
 
-      - uses: qase-tms/gh-actions/report
+      - name: Upload test results to Qase
+        uses: qase-tms/gh-actions/report
         id: report
         with:
           token: ${{ secrets.QASE_API_TOKEN }}
