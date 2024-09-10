@@ -105,6 +105,9 @@ jobs:
       #         --id ${{ env.QASE_TESTOPS_RUN_ID }} \
       #         --verbose
 
+      - name: Debug Step Result
+        run: "echo 'Result: ${{ steps.qase-run-create.result }}'"
+
       - name: Complete a Qase test run
         uses: qase-tms/gh-actions/run-complete@v1
         id: complete
